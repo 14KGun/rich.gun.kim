@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import type { HealthResponse } from '@rich/schemas';
 
-@Injectable()
-export class HealthService {
-  check(): HealthResponse {
+@Controller()
+export class AppController {
+  @Get('health')
+  health(): HealthResponse {
     return {
       status: 'ok',
       uptime: process.uptime(),
