@@ -3,14 +3,20 @@
   "private": true,
   "packageManager": "pnpm@10.11.0",
   "engines": {
-    "node": ">=22",
+    "node": ">=22.22.3",
     "pnpm": "10.11.0"
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "build": "pnpm -r build",
-    "dev": "pnpm -r --parallel dev",
+    "build:packages": "pnpm --filter \"./packages/*\" build",
+    "dev": "pnpm build:packages && pnpm -r --parallel dev",
     "lint": "pnpm -r lint",
-    "test": "pnpm -r test"
+    "test": "pnpm build:packages && pnpm -r test"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "oxlint": "^1.89.0",
+    "typescript": "~6.0.3"
   }
 }
