@@ -46,7 +46,7 @@ chore(repo): bump oxlint to 1.90
 - type: `feat` · `fix` · `refactor` · `test` · `docs` · `chore` · `build` · `ci`
 - scope: `web` · `api` · `constants` · `schemas` · `repo` (루트, 하네스, 설정)
 - 제목은 영어 명령형, 72자 이내, 끝에 마침표를 찍지 않는다.
-- 본문에는 "무엇을"보다 "왜"를 쓴다. 바뀐 점이 여러 개면 `-` 불릿으로 나눈다.
+- 본문은 한국어로 쓴다. "무엇을"보다 "왜"를 쓰고, 바뀐 점이 여러 개면 `-` 불릿으로 나눈다.
 - `Co-Authored-By` 등 트레일러는 본문 맨 끝에 둔다.
 - 커밋 하나는 하나의 논리적 변경이고, 커밋마다 `pnpm check` 가 통과해야 한다.
 - `pnpm-lock.yaml` 은 `pnpm install` 로만 바꾸고, 그 원인이 된 `package.json` 변경과 같은 커밋에 넣는다.
@@ -55,7 +55,7 @@ chore(repo): bump oxlint to 1.90
 
 - main 에는 squash 머지만 한다. PR 제목이 곧 main 의 커밋 제목이므로, PR 제목도 위 Conventional
   형식을 따른다 (예: `feat(api): add users endpoint`).
-- 본문은 `.github/pull_request_template.md` 를 따른다. squash 커밋 본문이 PR 설명이 되므로
+- PR 설명은 한국어로 쓰고, `.github/pull_request_template.md` 를 따른다. squash 커밋 본문이 PR 설명이 되므로
   PR 안의 개별 커밋이 아니라 PR 전체의 변경 이유를 쓴다.
 - 이슈 하나에 PR 하나를 만들고, 본문에 `Closes #N` 을 쓴다.
 - 변경은 lockfile 을 빼고 대략 400줄 이내가 목표다. 넘으면 나눈다.
