@@ -36,7 +36,9 @@ tsconfig.base.json  # 모든 워크스페이스가 extends 하는 공유 tsconfi
 | `pnpm build` | 모든 워크스페이스 빌드 (의존 순서대로) |
 | `pnpm dev` | 공유 패키지를 먼저 빌드한 뒤 모든 워크스페이스 dev 서버/watch 실행 |
 | `pnpm lint` | 모든 워크스페이스 lint (oxlint) |
+| `pnpm typecheck` | 공유 패키지를 먼저 빌드한 뒤 모든 워크스페이스 타입 검사 (`tsc --noEmit`) |
 | `pnpm test` | 공유 패키지를 먼저 빌드한 뒤 모든 워크스페이스 테스트 (Vitest) |
+| `pnpm check` | lint → typecheck → test 를 순서대로 실행 |
 
 web과 api는 별도 출처(도메인)로 동작합니다.
 

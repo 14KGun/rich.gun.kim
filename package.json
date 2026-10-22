@@ -12,7 +12,9 @@
     "build:packages": "pnpm --filter \"./packages/*\" build",
     "dev": "pnpm build:packages && pnpm -r --parallel dev",
     "lint": "pnpm -r lint",
-    "test": "pnpm build:packages && pnpm -r test"
+    "typecheck": "pnpm build:packages && pnpm -r typecheck",
+    "test": "pnpm build:packages && pnpm -r test",
+    "check": "pnpm lint && pnpm typecheck && pnpm test"
   },
   "devDependencies": {
     "@types/node": "^24.19.2",
