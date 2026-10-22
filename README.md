@@ -44,3 +44,12 @@ web과 api는 별도 출처(도메인)로 동작합니다.
 
 - web은 `VITE_API_URL`(기본값 `http://localhost:3000`)로 API를 호출합니다.
 - api는 `CORS_ORIGIN`(기본값 `http://localhost:5173`)에서 오는 요청을 허용합니다.
+
+## CI
+
+PR 에서는 GitHub Actions 로 두 가지를 검사하며, 둘 다 통과해야 main 에 머지할 수 있습니다.
+
+| check | 내용 |
+| --- | --- |
+| `check` | `pnpm install --frozen-lockfile` 후 `pnpm check` (main push 에서도 실행) |
+| `pr-title` | PR 제목이 Conventional Commits 형식인지 (허용 type · scope, 72자 이내, 끝 마침표 금지). 규칙은 `CLAUDE.md` 의 "커밋" 참고 |

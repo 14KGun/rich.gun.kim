@@ -67,6 +67,13 @@ chore(repo): bump oxlint to 1.90
   볼 수 있게 하기 위해서다.
 - main 이 앞서 나가면 rebase 대신 merge 로 따라간다.
 
+## CI
+
+`.github/workflows/` 의 두 워크플로가 main 브랜치 보호 규칙의 필수 status check 다.
+
+- `check` — PR 과 main push 에서 `pnpm install --frozen-lockfile` 후 `pnpm check` 를 실행한다
+- `pr-title` — PR 제목이 위 커밋 제목 규칙(type · scope 목록, 72자 이내, 끝 마침표 금지)을 따르는지 검사한다
+
 ## 하네스
 
 `.claude/settings.json`

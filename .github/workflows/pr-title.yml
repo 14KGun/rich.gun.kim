@@ -1,0 +1,51 @@
+# main 은 squash 머지만 하므로 PR 제목이 곧 main 의 커밋 제목이다.
+# CLAUDE.md 의 커밋 제목 규칙 (Conventional Commits, type/scope 목록, 72자, 마침표 금지) 을 검사한다.
+# job 이름 `pr-title` 은 main 브랜치 보호 규칙의 필수 status check 이름과 같아야 한다.
+name: pr-title
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: read
+
+jobs:
+  pr-title:
+    name: pr-title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            refactor
+            test
+            docs
+            chore
+            build
+            ci
+          scopes: |
+            web
+            api
+            constants
+            schemas
+            repo
+          requireScope: true
+          subjectPattern: ^.*[^.]$
+          subjectPatternError: |
+            제목 "{title}" 이 마침표로 끝납니다. 끝의 마침표를 지워 주세요.
+
+      # 제목은 셸에 직접 넣지 않고 환경 변수로 넘긴다 (스크립트 인젝션 방지)
+      - name: Check title length
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          length=${#TITLE}
+          if [ "$length" -gt 72 ]; then
+            echo "::error::PR 제목은 72자 이내여야 합니다 (현재 ${length}자): $TITLE"
+            exit 1
+          fi

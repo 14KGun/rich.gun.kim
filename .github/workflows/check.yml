@@ -1,0 +1,36 @@
+# pnpm check (lint → typecheck → test) 가 통과하지 않으면 PR 을 머지할 수 없게 한다.
+# job 이름 `check` 는 main 브랜치 보호 규칙의 필수 status check 이름과 같아야 한다.
+name: check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    name: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # version 을 비워 두면 package.json 의 packageManager (pnpm@10.11.0) 를 따른다
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+
+      # .nvmrc 는 메이저 버전만 적혀 있으므로, 러너 캐시의 오래된 22.x 대신 최신 22.x 를 받아
+      # engines.node (>=22.22.3) 를 만족시킨다. engine-strict 라서 맞지 않으면 install 이 실패한다.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          check-latest: true
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
