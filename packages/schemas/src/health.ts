@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-/** `GET /api/health` 응답 */
+/** `GET /health` 응답 */
 export const healthResponseSchema = z.object({
   status: z.literal('ok'),
   uptime: z.number().nonnegative(),

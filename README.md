@@ -38,4 +38,7 @@ tsconfig.base.json  # 모든 워크스페이스가 extends 하는 공유 tsconfi
 | `pnpm lint` | 모든 워크스페이스 lint (oxlint) |
 | `pnpm test` | 공유 패키지를 먼저 빌드한 뒤 모든 워크스페이스 테스트 (Vitest) |
 
-개발 중에는 web(`http://localhost:5173`)이 `/api` 요청을 api(`http://localhost:3000`)로 프록시합니다.
+web과 api는 별도 출처(도메인)로 동작합니다.
+
+- web은 `VITE_API_URL`(기본값 `http://localhost:3000`)로 API를 호출합니다.
+- api는 `CORS_ORIGIN`(기본값 `http://localhost:5173`)에서 오는 요청을 허용합니다.
