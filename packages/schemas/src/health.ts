@@ -1,0 +1,10 @@
+import { z } from 'zod';
+
+/** `GET /health` 응답 */
+export const healthResponseSchema = z.object({
+  status: z.literal('ok'),
+  uptime: z.number().nonnegative(),
+  timestamp: z.iso.datetime(),
+});
+
+export type HealthResponse = z.infer<typeof healthResponseSchema>;
