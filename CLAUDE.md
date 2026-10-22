@@ -32,6 +32,25 @@ pnpm 워크스페이스 모노레포. 구조와 실행 방법의 상세는 `READ
 - 코드 주석과 문서는 한국어로 작성한다.
 - `.env*` 파일은 읽거나 커밋하지 않는다.
 
+## 커밋
+
+제목은 Conventional Commits 형식으로 쓰고, 워크스페이스를 scope 로 쓴다.
+
+```
+feat(api): add GET /users endpoint
+fix(web): handle non-JSON health response
+refactor(schemas): split health schema into its own module
+chore(repo): bump oxlint to 1.90
+```
+
+- type: `feat` · `fix` · `refactor` · `test` · `docs` · `chore` · `build` · `ci`
+- scope: `web` · `api` · `constants` · `schemas` · `repo` (루트, 하네스, 설정)
+- 제목은 영어 명령형, 72자 이내, 끝에 마침표를 찍지 않는다.
+- 본문에는 "무엇을"보다 "왜"를 쓴다. 바뀐 점이 여러 개면 `-` 불릿으로 나눈다.
+- `Co-Authored-By` 등 트레일러는 본문 맨 끝에 둔다.
+- 커밋 하나는 하나의 논리적 변경이고, 커밋마다 `pnpm check` 가 통과해야 한다.
+- `pnpm-lock.yaml` 은 `pnpm install` 로만 바꾸고, 그 원인이 된 `package.json` 변경과 같은 커밋에 넣는다.
+
 ## 하네스
 
 `.claude/settings.json`
