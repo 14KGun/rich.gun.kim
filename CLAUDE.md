@@ -51,6 +51,22 @@ chore(repo): bump oxlint to 1.90
 - 커밋 하나는 하나의 논리적 변경이고, 커밋마다 `pnpm check` 가 통과해야 한다.
 - `pnpm-lock.yaml` 은 `pnpm install` 로만 바꾸고, 그 원인이 된 `package.json` 변경과 같은 커밋에 넣는다.
 
+## PR
+
+- main 에는 squash 머지만 한다. PR 제목이 곧 main 의 커밋 제목이므로, PR 제목도 위 Conventional
+  형식을 따른다 (예: `feat(api): add users endpoint`).
+- 본문은 `.github/pull_request_template.md` 를 따른다. squash 커밋 본문이 PR 설명이 되므로
+  PR 안의 개별 커밋이 아니라 PR 전체의 변경 이유를 쓴다.
+- 이슈 하나에 PR 하나를 만들고, 본문에 `Closes #N` 을 쓴다.
+- 변경은 lockfile 을 빼고 대략 400줄 이내가 목표다. 넘으면 나눈다.
+- `packages/schemas` 를 바꾸면 그 스키마를 쓰는 web 과 api 쪽 수정도 같은 PR 에 넣는다.
+  main 이 깨지는 중간 상태를 만들지 않기 위해서다.
+- 브랜치 이름은 `<type>/<이슈번호>-<짧은-설명>` 이다 (예: `feat/12-users-endpoint`).
+  Claude 세션 브랜치(`claude/...`)는 예외다.
+- 리뷰 지적은 새 커밋으로 반영하고 force-push 하지 않는다. 리뷰어가 이전 리뷰 이후 바뀐 부분만
+  볼 수 있게 하기 위해서다.
+- main 이 앞서 나가면 rebase 대신 merge 로 따라간다.
+
 ## 하네스
 
 `.claude/settings.json`
