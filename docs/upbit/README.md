@@ -4,6 +4,19 @@
 명세는 [업비트 개발자 센터](https://docs.upbit.com/kr)에서 2026-10-23 에 옮겨 왔다.
 조사 배경은 [이슈 #3](https://github.com/14KGun/rich.gun.kim/issues/3) 을 참고한다.
 
+## 원문
+
+업비트 개발자 센터의 Markdown 원문을 그대로 저장해 두었다. 이 README 는 원문에서 이 프로젝트에 필요한 내용만 추린 것이다.
+각 파일 맨 위 `updatedAt` 이 업비트 쪽 마지막 수정 시각이다.
+
+| 파일 | 원문 |
+|---|---|
+| [auth.md](./auth.md) | [인증](https://docs.upbit.com/kr/reference/auth) |
+| [get-balance.md](./get-balance.md) | [포켓 잔고 조회](https://docs.upbit.com/kr/reference/get-balance) |
+| [list-tickers.md](./list-tickers.md) | [페어 단위 현재가 조회](https://docs.upbit.com/kr/reference/list-tickers) |
+| [list-trading-pairs.md](./list-trading-pairs.md) | [페어 목록 조회](https://docs.upbit.com/kr/reference/list-trading-pairs) |
+| [rest-api-best-practice.md](./rest-api-best-practice.md) | [REST API 연동 Best Practice](https://docs.upbit.com/kr/docs/rest-api-best-practice) |
+
 ## 이 프로젝트에서 업비트가 맡는 데이터
 
 코인 보유 현황과 평가금액이다. 업비트 계좌 조회에는 평가금액이 없으므로 현재가를 곱해서 계산한다.
