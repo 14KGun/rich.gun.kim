@@ -4,9 +4,9 @@
 
 | 상품 | 사용 | 메소드 |
 |---|---|---|
-| 보유카드 | ✅ | `getCards(organization)` |
-| 승인내역 | ✅ | `getCardApprovals({ organization, startDate, endDate })` — 전체 카드(`inquiryType: "1"`)를 한 번에 조회 |
-| 청구내역 | ✅ | `getCardBillings({ organization, month? })` — `month`(YYYYMM)를 `startDate` 로 보낸다 |
+| 보유카드 | ✅ | `getCards(connectedId, organization)` |
+| 승인내역 | ✅ | `getCardApprovals(connectedId, { organization, startDate, endDate })` — 전체 카드(`inquiryType: "1"`)를 한 번에 조회 |
+| 청구내역 | ✅ | `getCardBillings(connectedId, { organization, month? })` — `month`(YYYYMM)를 `startDate` 로 보낸다 |
 
 한도조회, 실적조회 상품도 있지만 지금은 쓰지 않아 명세를 옮기지 않았다.
 

@@ -4,8 +4,8 @@
 
 | 상품 | 사용 | 메소드 / 쓰지 않는 이유 |
 |---|---|---|
-| 전계좌 | ✅ | `getStockAccounts(organization)` — 계좌별 예수금·평가금액·수익률 |
-| 주식잔고조회 | ✅ | `getStockBalance({ organization, account, accountPassword? })` — 종목별 보유수량·평가금액 |
+| 전계좌 | ✅ | `getStockAccounts(connectedId, organization)` — 계좌별 예수금·평가금액·수익률 |
+| 주식잔고조회 | ✅ | `getStockBalance(connectedId, { organization, account, accountPassword? })` — 종목별 보유수량·평가금액 |
 | 종합자산 | | 주식잔고조회에 펀드·CMA 등 다른 상품 유형까지 포함한 것. 주식 외 상품이 필요해지면 검토한다 |
 | 입출금내역 | | 잔고는 전계좌 스냅샷으로 충분하다 |
 

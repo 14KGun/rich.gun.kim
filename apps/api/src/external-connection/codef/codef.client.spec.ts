@@ -8,7 +8,6 @@ const config: CodefConfig = {
   clientId: 'client-id',
   clientSecret: 'client-secret',
   publicKey: '',
-  connectedId: 'connected-id',
 };
 
 const tokenResponse = () =>
@@ -108,11 +107,10 @@ describe('CodefClient', () => {
     expect(fetchMock).toHaveBeenCalledTimes(4);
   });
 
-  it('클라이언트 키나 커넥티드 아이디가 없으면 호출 전에 알려 준다', async () => {
-    const client = new CodefClient({ ...config, clientId: '', connectedId: '' });
+  it('클라이언트 키가 없으면 호출 전에 알려 준다', async () => {
+    const client = new CodefClient({ ...config, clientId: '' });
 
     await expect(client.request('/v1/test', {})).rejects.toThrow('CODEF_CLIENT_ID');
-    expect(() => client.connectedId).toThrow('CODEF_CONNECTED_ID');
     expect(fetchMock).not.toHaveBeenCalled();
   });
 

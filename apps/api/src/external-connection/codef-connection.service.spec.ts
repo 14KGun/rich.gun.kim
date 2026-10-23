@@ -9,7 +9,6 @@ describe('CodefConnectionService', () => {
   beforeEach(() => {
     request.mockReset();
     const client = {
-      connectedId: 'cid',
       request,
       encrypt: (plainText: string) => `enc(${plainText})`,
     } as unknown as CodefClient;
@@ -42,13 +41,23 @@ describe('CodefConnectionService', () => {
     it('계정 삭제는 설정된 커넥티드 아이디로 요청한다', async () => {
       request.mockResolvedValueOnce({ connectedId: 'cid', successList: [], errorList: [] });
 
-      await service.deleteAccounts([{ businessType: 'CD', organization: '0309', loginType: 'id' }]);
+      await service.deleteAccounts('cid', [{ businessType: 'CD', organization: '0309', loginType: 'id' }]);
 
       expect(request).toHaveBeenCalledWith('/v1/account/delete', {
         connectedId: 'cid',
         accountList: [{ countryCode: 'KR', businessType: 'CD', clientType: 'P', organization: '0309', loginType: '1' }],
       });
     });
+  });
+
+  it('사용자마다 넘긴 커넥티드 아이디로 요청한다', async () => {
+    request.mockResolvedValue({ accountList: [] });
+
+    await service.getRegisteredAccounts('user-a-cid');
+    await service.getRegisteredAccounts('user-b-cid');
+
+    expect(request).toHaveBeenNthCalledWith(1, '/v1/account/list', { connectedId: 'user-a-cid' });
+    expect(request).toHaveBeenNthCalledWith(2, '/v1/account/list', { connectedId: 'user-b-cid' });
   });
 
   describe('은행', () => {
@@ -69,7 +78,7 @@ describe('CodefConnectionService', () => {
         resInsurance: [{ resAccount: '보험' }],
       });
 
-      const result = await service.getBankAccounts('0004');
+      const result = await service.getBankAccounts('cid', '0004');
 
       expect(request).toHaveBeenCalledWith('/v1/kr/bank/p/account/account-list', {
         connectedId: 'cid',
@@ -101,7 +110,7 @@ describe('CodefConnectionService', () => {
         ],
       });
 
-      const result = await service.getBankTransactions({
+      const result = await service.getBankTransactions('cid', {
         organization: '0004',
         account: '02004130000000',
         startDate: '20251001',
@@ -137,7 +146,7 @@ describe('CodefConnectionService', () => {
     it('전계좌는 한 건이어도 배열로 돌려준다', async () => {
       request.mockResolvedValueOnce({ resAccount: '4555', resAccountName: '위탁', resValuationAmt: '5000000', resEarningsRate: '-3.25' });
 
-      const result = await service.getStockAccounts('0240');
+      const result = await service.getStockAccounts('cid', '0240');
 
       expect(result).toHaveLength(1);
       expect(result[0]).toMatchObject({ resAccount: '4555', resValuationAmt: 5000000, resEarningsRate: -3.25, resLoanAmt: null });
@@ -150,7 +159,7 @@ describe('CodefConnectionService', () => {
         resItemList: [{ resProductTypeCd: '01', resItemCode: '005930', resItemName: '삼성전자', resQuantity: '10', resAvgPresentAmt: '70,000' }],
       });
 
-      const result = await service.getStockBalance({ organization: '0240', account: '4555', accountPassword: '1234' });
+      const result = await service.getStockBalance('cid', { organization: '0240', account: '4555', accountPassword: '1234' });
 
       expect(request).toHaveBeenCalledWith('/v1/kr/stock/a/account/balance-inquiry', {
         connectedId: 'cid',
@@ -179,7 +188,7 @@ describe('CodefConnectionService', () => {
         },
       ]);
 
-      const result = await service.getCardApprovals({ organization: '0309', startDate: '20251001', endDate: '20251022' });
+      const result = await service.getCardApprovals('cid', { organization: '0309', startDate: '20251001', endDate: '20251022' });
 
       expect(request).toHaveBeenCalledWith('/v1/kr/card/p/account/approval-list', {
         connectedId: 'cid',
@@ -203,7 +212,7 @@ describe('CodefConnectionService', () => {
         resChargeHistoryList: [{ resMemberStoreName: '서울강남', resUsedAmount: '17100', resInstallmentMonth: '0' }],
       });
 
-      const result = await service.getCardBillings({ organization: '0309', month: '202510' });
+      const result = await service.getCardBillings('cid', { organization: '0309', month: '202510' });
 
       expect(request).toHaveBeenCalledWith('/v1/kr/card/p/account/billing-list', {
         connectedId: 'cid',
@@ -218,7 +227,7 @@ describe('CodefConnectionService', () => {
     it('보유카드는 카드 이미지 없이 조회한다', async () => {
       request.mockResolvedValueOnce({ resCardNo: '9490********0000', resCardName: '원카드', resValidPeriod: '20280531' });
 
-      const result = await service.getCards('0309');
+      const result = await service.getCards('cid', '0309');
 
       expect(request).toHaveBeenCalledWith('/v1/kr/card/p/account/card-list', {
         connectedId: 'cid',

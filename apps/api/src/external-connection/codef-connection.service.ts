@@ -54,6 +54,7 @@ const EXCHANGE_RATE_ORGANIZATION = '0081';
 
 /**
  * CODEF 로 은행 잔고·거래내역, 증권 잔고, 카드 사용내역, 환율을 조회한다.
+ * 커넥티드 아이디는 사용자마다 다르므로 호출하는 쪽이 사용자별로 저장해 두고 넘긴다.
  * 각 상품의 입출력 명세는 docs/codef 를 참고한다.
  */
 @Injectable()
@@ -70,21 +71,25 @@ export class CodefConnectionService {
     return accountRegistrationSchema.parse(data);
   }
 
-  /** 설정된 커넥티드 아이디에 기관 계정을 추가한다. */
-  async addAccounts(accounts: CodefAccountInput[]): Promise<AccountRegistration> {
+  /** 커넥티드 아이디에 기관 계정을 추가한다. */
+  async addAccounts(connectedId: string, accounts: CodefAccountInput[]): Promise<AccountRegistration> {
     const data = await this.client.request('/v1/account/add', {
-      connectedId: this.client.connectedId,
+      connectedId,
       accountList: accounts.map((account) => this.toAccountParam(account)),
     });
     return accountRegistrationSchema.parse(data);
   }
 
-  /** 설정된 커넥티드 아이디에서 기관 계정을 삭제한다. 삭제한 계정은 복구할 수 없다. */
+  /**
+   * 커넥티드 아이디에서 기관 계정을 삭제한다. 삭제한 계정은 복구할 수 없다.
+   * 계정을 모두 삭제하면 커넥티드 아이디도 삭제된다.
+   */
   async deleteAccounts(
+    connectedId: string,
     accounts: (CodefAccountKey & { loginType: CodefLoginType })[],
   ): Promise<AccountRegistration> {
     const data = await this.client.request('/v1/account/delete', {
-      connectedId: this.client.connectedId,
+      connectedId,
       accountList: accounts.map((account) => ({
         countryCode: 'KR',
         businessType: account.businessType,
@@ -96,10 +101,10 @@ export class CodefConnectionService {
     return accountRegistrationSchema.parse(data);
   }
 
-  /** 설정된 커넥티드 아이디에 등록된 기관 계정 목록 */
-  async getRegisteredAccounts(): Promise<RegisteredAccounts> {
+  /** 커넥티드 아이디에 등록된 기관 계정 목록 */
+  async getRegisteredAccounts(connectedId: string): Promise<RegisteredAccounts> {
     const data = await this.client.request('/v1/account/list', {
-      connectedId: this.client.connectedId,
+      connectedId,
     });
     return registeredAccountsSchema.parse(data);
   }
@@ -107,9 +112,9 @@ export class CodefConnectionService {
   // ---- 은행 ----
 
   /** 은행 하나의 보유계좌와 잔액 (예금·신탁, 외화, 펀드, 대출) */
-  async getBankAccounts(organization: string): Promise<BankAccounts> {
+  async getBankAccounts(connectedId: string, organization: string): Promise<BankAccounts> {
     const data = await this.client.request('/v1/kr/bank/p/account/account-list', {
-      connectedId: this.client.connectedId,
+      connectedId,
       organization,
     });
     return bankAccountsSchema.parse(data);
@@ -117,10 +122,11 @@ export class CodefConnectionService {
 
   /** 수시입출 계좌의 거래내역. 거래 후 잔액으로 잔고 추이를 복원하는 데 쓴다. */
   async getBankTransactions(
+    connectedId: string,
     params: DateRange & { organization: string; account: string },
   ): Promise<BankTransactions> {
     const data = await this.client.request('/v1/kr/bank/p/account/transaction-list', {
-      connectedId: this.client.connectedId,
+      connectedId,
       organization: params.organization,
       account: params.account,
       startDate: params.startDate,
@@ -134,22 +140,21 @@ export class CodefConnectionService {
   // ---- 증권 ----
 
   /** 증권사 하나의 전체 계좌와 계좌별 예수금·평가금액·수익률 */
-  async getStockAccounts(organization: string): Promise<StockAccount[]> {
+  async getStockAccounts(connectedId: string, organization: string): Promise<StockAccount[]> {
     const data = await this.client.request('/v1/kr/stock/a/account/account-list', {
-      connectedId: this.client.connectedId,
+      connectedId,
       organization,
     });
     return stockAccountsSchema.parse(data);
   }
 
   /** 증권 계좌 하나의 종목별 보유수량·평균매입가·평가금액 */
-  async getStockBalance(params: {
-    organization: string;
-    account: string;
-    accountPassword?: string;
-  }): Promise<StockBalance> {
+  async getStockBalance(
+    connectedId: string,
+    params: { organization: string; account: string; accountPassword?: string },
+  ): Promise<StockBalance> {
     const data = await this.client.request('/v1/kr/stock/a/account/balance-inquiry', {
-      connectedId: this.client.connectedId,
+      connectedId,
       organization: params.organization,
       account: params.account,
       accountPassword: params.accountPassword && this.client.encrypt(params.accountPassword),
@@ -160,9 +165,9 @@ export class CodefConnectionService {
   // ---- 카드 ----
 
   /** 카드사 하나의 보유카드 목록 */
-  async getCards(organization: string): Promise<Card[]> {
+  async getCards(connectedId: string, organization: string): Promise<Card[]> {
     const data = await this.client.request('/v1/kr/card/p/account/card-list', {
-      connectedId: this.client.connectedId,
+      connectedId,
       organization,
       inquiryType: '0', // 카드 이미지 미포함
     });
@@ -170,9 +175,12 @@ export class CodefConnectionService {
   }
 
   /** 카드사 하나의 모든 카드 승인내역 */
-  async getCardApprovals(params: DateRange & { organization: string }): Promise<CardApproval[]> {
+  async getCardApprovals(
+    connectedId: string,
+    params: DateRange & { organization: string },
+  ): Promise<CardApproval[]> {
     const data = await this.client.request('/v1/kr/card/p/account/approval-list', {
-      connectedId: this.client.connectedId,
+      connectedId,
       organization: params.organization,
       startDate: params.startDate,
       endDate: params.endDate,
@@ -184,9 +192,12 @@ export class CodefConnectionService {
   }
 
   /** 카드사 하나의 청구 명세서. month(YYYYMM) 를 생략하면 최근 명세서다. */
-  async getCardBillings(params: { organization: string; month?: string }): Promise<CardBilling[]> {
+  async getCardBillings(
+    connectedId: string,
+    params: { organization: string; month?: string },
+  ): Promise<CardBilling[]> {
     const data = await this.client.request('/v1/kr/card/p/account/billing-list', {
-      connectedId: this.client.connectedId,
+      connectedId,
       organization: params.organization,
       startDate: params.month,
       memberStoreInfoYN: '0', // 가맹점 상세 미포함

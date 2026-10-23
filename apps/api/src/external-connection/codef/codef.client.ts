@@ -57,13 +57,6 @@ export class CodefClient {
 
   constructor(@Inject(CODEF_CONFIG) private readonly config: CodefConfig) {}
 
-  get connectedId(): string {
-    if (!this.config.connectedId) {
-      throw new Error('CODEF_CONNECTED_ID 가 설정되지 않았습니다. 계정을 먼저 등록하세요.');
-    }
-    return this.config.connectedId;
-  }
-
   /** 상품 API 를 호출하고 결과 코드를 확인한 뒤 data 를 돌려준다. */
   async request(path: string, body: Record<string, unknown>): Promise<unknown> {
     const response = await fetch(`${API_HOSTS[this.config.environment]}${path}`, {

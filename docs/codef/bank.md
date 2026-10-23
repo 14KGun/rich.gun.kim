@@ -4,8 +4,8 @@
 
 | 상품 | 사용 | 메소드 / 쓰지 않는 이유 |
 |---|---|---|
-| 보유계좌 | ✅ | `getBankAccounts(organization)` — 계좌별 잔고 스냅샷 |
-| 수시입출 거래내역 | ✅ | `getBankTransactions({ organization, account, startDate, endDate })` — 거래 후 잔액으로 잔고 추이 복원 |
+| 보유계좌 | ✅ | `getBankAccounts(connectedId, organization)` — 계좌별 잔고 스냅샷 |
+| 수시입출 거래내역 | ✅ | `getBankTransactions(connectedId, { organization, account, startDate, endDate })` — 거래 후 잔액으로 잔고 추이 복원 |
 | 적금 거래내역 | | 보유계좌 잔액을 매일 쌓으면 추이가 나온다 |
 | 대출 거래내역 | | 대출 잔액은 보유계좌의 `resLoan` 으로 온다 |
 | 빠른조회 | | 수시입출 거래내역과 겹친다. 인증서 없이 아이디로 조회하는 대안이다 |

@@ -22,16 +22,16 @@
 | 분류 | 메소드 | CODEF 상품 | 엔드포인트 |
 |---|---|---|---|
 | 계정 | `createConnectedId(accounts)` | 계정 등록 | `/v1/account/create` |
-| 계정 | `addAccounts(accounts)` | 계정 추가 | `/v1/account/add` |
-| 계정 | `deleteAccounts(accounts)` | 계정 삭제 | `/v1/account/delete` |
-| 계정 | `getRegisteredAccounts()` | 계정 목록 | `/v1/account/list` |
-| 은행 | `getBankAccounts(organization)` | 보유계좌 | `/v1/kr/bank/p/account/account-list` |
-| 은행 | `getBankTransactions(params)` | 수시입출 거래내역 | `/v1/kr/bank/p/account/transaction-list` |
-| 증권 | `getStockAccounts(organization)` | 전계좌 | `/v1/kr/stock/a/account/account-list` |
-| 증권 | `getStockBalance(params)` | 주식잔고조회 | `/v1/kr/stock/a/account/balance-inquiry` |
-| 카드 | `getCards(organization)` | 보유카드 | `/v1/kr/card/p/account/card-list` |
-| 카드 | `getCardApprovals(params)` | 승인내역 | `/v1/kr/card/p/account/approval-list` |
-| 카드 | `getCardBillings(params)` | 청구내역 | `/v1/kr/card/p/account/billing-list` |
+| 계정 | `addAccounts(connectedId, accounts)` | 계정 추가 | `/v1/account/add` |
+| 계정 | `deleteAccounts(connectedId, accounts)` | 계정 삭제 | `/v1/account/delete` |
+| 계정 | `getRegisteredAccounts(connectedId)` | 계정 목록 | `/v1/account/list` |
+| 은행 | `getBankAccounts(connectedId, organization)` | 보유계좌 | `/v1/kr/bank/p/account/account-list` |
+| 은행 | `getBankTransactions(connectedId, params)` | 수시입출 거래내역 | `/v1/kr/bank/p/account/transaction-list` |
+| 증권 | `getStockAccounts(connectedId, organization)` | 전계좌 | `/v1/kr/stock/a/account/account-list` |
+| 증권 | `getStockBalance(connectedId, params)` | 주식잔고조회 | `/v1/kr/stock/a/account/balance-inquiry` |
+| 카드 | `getCards(connectedId, organization)` | 보유카드 | `/v1/kr/card/p/account/card-list` |
+| 카드 | `getCardApprovals(connectedId, params)` | 승인내역 | `/v1/kr/card/p/account/approval-list` |
+| 카드 | `getCardBillings(connectedId, params)` | 청구내역 | `/v1/kr/card/p/account/billing-list` |
 | 환율 | `getExchangeRates(date?)` | 환율조회 | `/v1/kr/bank/a/exchangerate/check` |
 
 ## 문서
@@ -50,9 +50,12 @@
 | `CODEF_CLIENT_ID` | 키 관리 화면의 clientId |
 | `CODEF_CLIENT_SECRET` | 키 관리 화면의 clientSecret |
 | `CODEF_PUBLIC_KEY` | 키 관리 화면의 publicKey. 비밀번호 RSA 암호화에 쓴다 |
-| `CODEF_CONNECTED_ID` | `createConnectedId` 로 발급받은 커넥티드 아이디 |
 
 키가 없어도 앱은 뜬다. CODEF 를 실제로 호출할 때 키가 없으면 오류가 난다.
+
+커넥티드 아이디는 환경 변수가 아니다. 사용자가 자기 기관 계정을 등록할 때마다 사용자별로 발급되므로,
+`createConnectedId` 결과의 `connectedId` 를 사용자 정보와 함께 저장해 두고, 조회 메소드의 첫 인자로 넘긴다.
+커넥티드 아이디만으로는 사용자가 누구인지 알 수 없으니 둘의 연결은 우리 쪽에서 관리해야 한다.
 
 ## 운영할 때 주의할 점
 

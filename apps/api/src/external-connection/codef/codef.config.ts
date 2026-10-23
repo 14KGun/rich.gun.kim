@@ -7,8 +7,6 @@ export interface CodefConfig {
   clientSecret: string;
   /** 비밀번호 RSA 암호화에 쓰는 공개키 (키 관리 화면의 base64 문자열) */
   publicKey: string;
-  /** 계정 등록으로 발급받은 커넥티드 아이디. 등록 전에는 비어 있다. */
-  connectedId: string;
 }
 
 export const CODEF_CONFIG = Symbol('CODEF_CONFIG');
@@ -29,6 +27,5 @@ export function codefConfigFromEnv(env: NodeJS.ProcessEnv = process.env): CodefC
     clientId: env.CODEF_CLIENT_ID ?? '',
     clientSecret: env.CODEF_CLIENT_SECRET ?? '',
     publicKey: env.CODEF_PUBLIC_KEY ?? '',
-    connectedId: env.CODEF_CONNECTED_ID ?? '',
   };
 }
