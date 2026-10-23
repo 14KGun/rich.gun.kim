@@ -3,6 +3,7 @@ import { BanksaladConnectionService } from './banksalad-connection.service';
 import { CodefClient } from './codef/codef.client';
 import { CODEF_CONFIG, codefConfigFromEnv } from './codef/codef.config';
 import { CodefConnectionService } from './codef-connection.service';
+import { UpbitClient } from './upbit/upbit.client';
 import { UpbitConnectionService } from './upbit-connection.service';
 
 const services = [CodefConnectionService, UpbitConnectionService, BanksaladConnectionService];
@@ -12,6 +13,7 @@ const services = [CodefConnectionService, UpbitConnectionService, BanksaladConne
   providers: [
     { provide: CODEF_CONFIG, useFactory: () => codefConfigFromEnv() },
     CodefClient,
+    UpbitClient,
     ...services,
   ],
   exports: services,
