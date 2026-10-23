@@ -1,5 +1,5 @@
 #!/bin/bash
-# 클라우드 세션 시작 시 lint/test/typecheck 를 바로 돌릴 수 있도록 환경을 준비한다.
+# 클라우드 세션 시작 시 lint/typecheck 를 바로 돌릴 수 있도록 환경을 준비한다.
 # 1) package.json engines 를 만족하는 Node 설치 (컨테이너 기본 Node 가 낮으면)
 # 2) pnpm install
 # 3) 공유 패키지(packages/*) 빌드 — 앱이 dist/ 를 import 하므로 필요

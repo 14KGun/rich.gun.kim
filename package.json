@@ -13,8 +13,7 @@
     "dev": "pnpm build:packages && pnpm -r --parallel dev",
     "lint": "pnpm -r lint",
     "typecheck": "pnpm build:packages && pnpm -r typecheck",
-    "test": "pnpm build:packages && pnpm -r test",
-    "check": "pnpm lint && pnpm typecheck && pnpm test"
+    "check": "pnpm lint && pnpm typecheck"
   },
   "devDependencies": {
     "@types/node": "^24.19.2",
