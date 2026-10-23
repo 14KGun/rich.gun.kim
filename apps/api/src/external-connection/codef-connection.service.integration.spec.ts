@@ -8,10 +8,15 @@ import { CodefConnectionService } from './codef-connection.service';
  *
  * - 환경은 항상 샌드박스로 고정한다. CODEF_ENVIRONMENT 를 읽지 않는다.
  * - 키는 샌드박스 전용 이름으로 받아서, 데모·정식 키와 섞이지 않게 한다.
- * - 키가 없으면 건너뛴다.
+ * - 키가 없으면 실패한다. 통합 테스트를 돌렸는데 아무것도 확인하지 않고 통과하는 일을 막기 위해서다.
  */
 const clientId = process.env.CODEF_SANDBOX_CLIENT_ID ?? '';
 const clientSecret = process.env.CODEF_SANDBOX_CLIENT_SECRET ?? '';
+if (!clientId || !clientSecret) {
+  throw new Error(
+    'CODEF_SANDBOX_CLIENT_ID, CODEF_SANDBOX_CLIENT_SECRET 환경 변수에 샌드박스 키를 설정해야 통합 테스트를 실행할 수 있습니다.',
+  );
+}
 
 /** 샌드박스는 실제 계정 없이 고정된 샘플 데이터를 돌려주므로 임의의 값을 쓴다. */
 const SANDBOX_CONNECTED_ID = 'sandbox-connected-id';
@@ -20,7 +25,7 @@ const STOCK = '0240';
 const CARD = '0309';
 const RANGE = { startDate: '20260901', endDate: '20260930' };
 
-describe.skipIf(!clientId || !clientSecret)('CodefConnectionService (CODEF 샌드박스)', () => {
+describe('CodefConnectionService (CODEF 샌드박스)', () => {
   const service = new CodefConnectionService(
     new CodefClient({ environment: 'sandbox', clientId, clientSecret, publicKey: '' }),
   );

@@ -67,7 +67,7 @@
 | `pnpm --filter @rich/api test:integration` | 통합 테스트. 샌드박스에 실제로 요청해 토큰 발급, 요청·응답 인코딩, 응답 스키마 파싱을 확인한다 |
 
 - 통합 테스트(`*.integration.spec.ts`)는 환경을 `sandbox` 로 고정하고 `CODEF_ENVIRONMENT` 를 읽지 않는다.
-- 통합 테스트용 키는 샌드박스 전용 이름 `CODEF_SANDBOX_CLIENT_ID`, `CODEF_SANDBOX_CLIENT_SECRET` 으로 받는다. 키가 없으면 건너뛴다.
+- 통합 테스트용 키는 샌드박스 전용 이름 `CODEF_SANDBOX_CLIENT_ID`, `CODEF_SANDBOX_CLIENT_SECRET` 으로 받는다. 키가 없으면 실패한다.
 - 모든 테스트에 `apps/api/test/codef-sandbox-guard.ts` 가 걸려 있다. `codef.io` 중 `sandbox.codef.io`, `oauth.codef.io` 가 아닌 호스트로 가는 `fetch` 는 실패시킨다.
 
 ## 운영할 때 주의할 점
