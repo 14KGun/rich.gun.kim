@@ -57,6 +57,19 @@
 `createConnectedId` 결과의 `connectedId` 를 사용자 정보와 함께 저장해 두고, 조회 메소드의 첫 인자로 넘긴다.
 커넥티드 아이디만으로는 사용자가 누구인지 알 수 없으니 둘의 연결은 우리 쪽에서 관리해야 한다.
 
+## 테스트
+
+테스트는 **CODEF 샌드박스만** 호출한다. 실제 기관 데이터를 건드리거나 호출 과다로 IP 가 차단되지 않게 하기 위해서다.
+
+| 명령 | 내용 |
+|---|---|
+| `pnpm --filter @rich/api test` | 단위 테스트. `fetch` 를 목으로 바꿔 네트워크를 쓰지 않는다. `pnpm check` 에 포함된다 |
+| `pnpm --filter @rich/api test:integration` | 통합 테스트. 샌드박스에 실제로 요청해 토큰 발급, 요청·응답 인코딩, 응답 스키마 파싱을 확인한다 |
+
+- 통합 테스트(`*.integration.spec.ts`)는 환경을 `sandbox` 로 고정하고 `CODEF_ENVIRONMENT` 를 읽지 않는다.
+- 통합 테스트용 키는 샌드박스 전용 이름 `CODEF_SANDBOX_CLIENT_ID`, `CODEF_SANDBOX_CLIENT_SECRET` 으로 받는다. 키가 없으면 건너뛴다.
+- 모든 테스트에 `apps/api/test/codef-sandbox-guard.ts` 가 걸려 있다. `codef.io` 중 `sandbox.codef.io`, `oauth.codef.io` 가 아닌 호스트로 가는 `fetch` 는 실패시킨다.
+
 ## 운영할 때 주의할 점
 
 - **호출 빈도:** 모든 상품 문서에 "과도한 API 호출 시 대상기관으로부터 IP 가 차단될 수 있다"는 경고가 있다. 하루 한 번 정도의 배치 스냅샷으로 쓰고, 화면을 열 때마다 호출하지 않는다.
