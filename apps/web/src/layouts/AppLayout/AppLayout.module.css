@@ -1,0 +1,37 @@
+.root {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 560px;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: var(--color-scrim);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast);
+}
+
+.scrimVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 32px 32px 64px;
+}
+
+/* 고정 헤더 높이만큼 위쪽 여백을 더 둔다 */
+.mainMobile {
+  padding: 100px 24px 64px;
+}

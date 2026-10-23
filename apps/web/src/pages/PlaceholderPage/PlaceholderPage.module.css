@@ -1,0 +1,18 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 960px;
+}
+
+.group {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: var(--letter-spacing-tight);
+}
