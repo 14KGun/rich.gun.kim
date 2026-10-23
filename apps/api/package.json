@@ -7,8 +7,7 @@
     "dev": "nest start --watch",
     "start": "node dist/main",
     "lint": "oxlint src",
-    "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
     "@nestjs/common": "^12.2.0",
@@ -17,14 +16,13 @@
     "@rich/constants": "workspace:*",
     "@rich/schemas": "workspace:*",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.2"
+    "rxjs": "^7.8.2",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@nestjs/cli": "^12.0.10",
     "@nestjs/schematics": "^12.0.10",
-    "@nestjs/testing": "^12.2.0",
     "@types/express": "^5.0.6",
-    "ts-loader": "^9.6.2",
-    "vitest": "^5.0.5"
+    "ts-loader": "^9.6.2"
   }
 }
