@@ -46,6 +46,15 @@ web과 api는 별도 출처(도메인)로 동작합니다.
 
 ## 환경 변수 (api)
 
-| 변수 | 설명 |
-| --- | --- |
-| `MONGODB_URI` | MongoDB 접속 URI (필수). DB 이름을 경로에 넣는다 (예: `mongodb+srv://<user>:<password>@<cluster>.mongodb.net/rich?retryWrites=true&w=majority`) |
+| 변수 | 필수 | 기본값 | 설명 |
+| --- | --- | --- | --- |
+| `MONGODB_URI` | 필수 | - | MongoDB 접속 URI. DB 이름을 경로에 넣는다 (예: `mongodb+srv://<user>:<password>@<cluster>.mongodb.net/rich?retryWrites=true&w=majority`). 없으면 앱이 시작되지 않는다 |
+| `CODEF_ENVIRONMENT` | | `development` | CODEF 환경. `sandbox` · `development` · `production` |
+| `CODEF_CLIENT_ID` | CODEF 사용 시 | - | CODEF 키 관리 화면의 clientId |
+| `CODEF_CLIENT_SECRET` | CODEF 사용 시 | - | CODEF 키 관리 화면의 clientSecret |
+| `CODEF_PUBLIC_KEY` | CODEF 사용 시 | - | CODEF 키 관리 화면의 publicKey. 비밀번호 RSA 암호화에 쓴다 |
+| `PORT` | | `3000` | api 서버 포트 |
+| `CORS_ORIGIN` | | `http://localhost:5173` | 요청을 허용할 web 출처 |
+
+CODEF 키는 앱 시작 때가 아니라 CODEF 를 호출할 때 검사한다. 업비트 API Key 는 사용자마다 달라 DB 에 저장하므로 환경 변수가 없다.
+CODEF 설정의 상세는 `docs/codef/README.md` 를 참고한다.
