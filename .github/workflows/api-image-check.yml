@@ -1,0 +1,39 @@
+# PR 에서 api 이미지가 빌드되는지만 확인한다. 레지스트리에는 올리지 않는다.
+name: Check API image build
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - apps/api/**
+      - packages/**
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - tsconfig.base.json
+      - .dockerignore
+      - .github/workflows/api-image*.yml
+
+concurrency:
+  group: api-image-check-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-api-image:
+    name: Build API image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/api/Dockerfile
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
