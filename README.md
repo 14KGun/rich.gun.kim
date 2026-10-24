@@ -50,3 +50,5 @@ web과 api는 별도 출처(도메인)로 동작합니다.
 | --- | --- |
 | `MONGODB_URI` | MongoDB 접속 URI (필수, 예: Atlas `mongodb+srv://...`) |
 | `MONGODB_DB_NAME` | 사용할 DB 이름. 생략하면 URI 경로의 DB 를 쓴다 |
+| `SECRET_ENCRYPTION_KEY` | 외부 연동 비밀값 암호화 키. 32바이트를 base64 로 인코딩한 값 (`openssl rand -base64 32`) |
+| `SECRET_ENCRYPTION_KEY_VERSION` | 위 키의 버전 (기본 1). 암호화한 값에 함께 저장된다 |
