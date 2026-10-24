@@ -21,7 +21,7 @@ type NewConnection<P extends ExternalProvider> = Omit<
 /** 연결 해제되지 않은 문서. 해제 시 deletedAt 을 채우므로 null 인 문서만 살아 있다. */
 const notDeleted = { deletedAt: { $type: 'null' } } as const;
 
-/** external_connections 컬렉션 접근. 비밀값은 이미 암호화된 상태로 주고받는다. */
+/** external_connections 컬렉션 접근 */
 @Injectable()
 export class ExternalConnectionRepository implements OnModuleInit {
   private readonly collection: Collection<ExternalConnection>;

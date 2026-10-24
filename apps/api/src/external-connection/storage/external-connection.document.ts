@@ -1,11 +1,10 @@
 import { ObjectId } from 'mongodb';
 import { z } from 'zod';
-import { encryptedValueSchema } from '../../crypto/secret-cipher';
 
 /*
  * external_connections 컬렉션의 문서 스키마.
  * 문서 하나는 사용자 한 명의 외부 서비스 연결 하나이고, 사용자당 서비스별로 하나만 둔다.
- * 은행 비밀번호·인증서는 CODEF 가 보관하므로 저장하지 않고, 커넥티드 아이디와 API Key 는 암호화해 저장한다.
+ * 은행 비밀번호·인증서는 CODEF 가 보관하므로 저장하지 않고, 커넥티드 아이디와 API Key 만 저장한다.
  */
 
 /** 마지막으로 실패한 호출의 오류 (예: CODEF CF-12100, 업비트 no_authorization_ip) */
@@ -50,17 +49,17 @@ export const codefConnectionSchema = z.object({
   provider: z.literal('codef'),
   /** 커넥티드 아이디를 발급받은 CODEF 환경. 다른 환경에서는 쓸 수 없다. */
   environment: z.enum(['sandbox', 'development', 'production']),
-  connectedId: encryptedValueSchema,
+  connectedId: z.string().min(1),
   institutions: z.array(codefInstitutionSchema),
 });
 
 export const upbitConnectionSchema = z.object({
   ...baseConnection,
   provider: z.literal('upbit'),
-  /** Access Key 마지막 4자리. 어떤 키를 등록했는지 화면에 보여줄 때 쓴다. */
-  accessKeyHint: z.string(),
-  /** { accessKey, secretKey } JSON 을 통째로 암호화한 값 */
-  credentials: encryptedValueSchema,
+  credentials: z.object({
+    accessKey: z.string().min(1),
+    secretKey: z.string().min(1),
+  }),
   /** API Key 만료일. 업비트가 알려주지 않으므로 사용자가 입력한다. */
   expiresAt: z.date().nullable(),
 });
