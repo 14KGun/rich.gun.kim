@@ -1,5 +1,5 @@
 # main 에 push 되면 api 이미지를 빌드해 GHCR 에 latest 태그로 올린다.
-name: api image
+name: Push API image to GHCR
 
 on:
   push:
@@ -18,7 +18,8 @@ env:
   IMAGE: ghcr.io/${{ github.repository_owner }}/rich-api
 
 jobs:
-  build-and-push:
+  push-api-image:
+    name: Build and push API image (latest)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
