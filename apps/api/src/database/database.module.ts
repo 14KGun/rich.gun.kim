@@ -25,8 +25,8 @@ function mongoClientFromEnv(env: NodeJS.ProcessEnv = process.env): MongoClient {
     {
       provide: MONGO_DB,
       inject: [MONGO_CLIENT],
-      // 이름을 생략하면 URI 경로의 DB 를 쓴다.
-      useFactory: (client: MongoClient): Db => client.db(process.env.MONGODB_DB_NAME),
+      // URI 경로의 DB 를 쓴다 (예: ...mongodb.net/rich). 경로가 없으면 드라이버 기본값 test 가 된다.
+      useFactory: (client: MongoClient): Db => client.db(),
     },
   ],
   exports: [MONGO_DB],

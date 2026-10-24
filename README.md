@@ -48,5 +48,4 @@ web과 api는 별도 출처(도메인)로 동작합니다.
 
 | 변수 | 설명 |
 | --- | --- |
-| `MONGODB_URI` | MongoDB 접속 URI (필수, 예: Atlas `mongodb+srv://...`) |
-| `MONGODB_DB_NAME` | 사용할 DB 이름. 생략하면 URI 경로의 DB 를 쓴다 |
+| `MONGODB_URI` | MongoDB 접속 URI (필수). DB 이름을 경로에 넣는다 (예: `mongodb+srv://<user>:<password>@<cluster>.mongodb.net/rich?retryWrites=true&w=majority`) |
