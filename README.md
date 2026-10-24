@@ -43,3 +43,10 @@ web과 api는 별도 출처(도메인)로 동작합니다.
 
 - web은 `VITE_API_URL`(기본값 `http://localhost:3000`)로 API를 호출합니다.
 - api는 `CORS_ORIGIN`(기본값 `http://localhost:5173`)에서 오는 요청을 허용합니다.
+
+## 환경 변수 (api)
+
+| 변수 | 설명 |
+| --- | --- |
+| `MONGODB_URI` | MongoDB 접속 URI (필수, 예: Atlas `mongodb+srv://...`) |
+| `MONGODB_DB_NAME` | 사용할 DB 이름. 생략하면 URI 경로의 DB 를 쓴다 |
